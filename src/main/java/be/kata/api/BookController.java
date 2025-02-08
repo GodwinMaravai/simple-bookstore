@@ -2,6 +2,7 @@ package be.kata.api;
 
 import be.kata.api.model.Book;
 import be.kata.service.BookService;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,7 +34,7 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Book> getById(@PathVariable String id) {
+    public ResponseEntity<Book> getById(@PathVariable @NotBlank String id) {
         if (!hasText(id)) {
             return ResponseEntity.badRequest().build();
         }
@@ -41,5 +42,4 @@ public class BookController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.noContent().build());
     }
-
 }

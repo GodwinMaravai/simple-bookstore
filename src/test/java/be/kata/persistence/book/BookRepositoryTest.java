@@ -3,9 +3,8 @@ package be.kata.persistence.book;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.util.ReflectionTestUtils;
 
-import static org.assertj.core.api.Assertions.assertThatNoException;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest(properties = {
         "spring.datasource.url=jdbc:h2:mem:testdb",
@@ -13,16 +12,20 @@ import static org.assertj.core.api.Assertions.assertThatNoException;
 })
 class BookRepositoryTest {
 
+    private BookEntity bookEntity;
+
     @Autowired
     private BookRepository bookRepository;
 
     @Test
-    void givenBookRepository_whenInvokeMethod_thenReturn_findAllMethod() {
-        assertThatNoException().isThrownBy(() -> ReflectionTestUtils.invokeMethod(bookRepository, "findAll"));
+    void givenBookRepositorySetUp_whenFindAll_thenReturnBookEntity() {
+        assertThat(bookRepository.findAll()).containsExactly(bookEntity);
     }
 
     @Test
-    void givenBookRepository_whenInvokeMethod_thenReturn_findByIdMethod() {
-        assertThatNoException().isThrownBy(() -> ReflectionTestUtils.invokeMethod(bookRepository, "findById", "B1"));
+    void givenBookRepositorySetUp_whenFindById_thenReturnBookEntity() {
+        assertThat(bookRepository.findById("B1"))
+                .isNotEmpty()
+                .contains(bookEntity);
     }
 }

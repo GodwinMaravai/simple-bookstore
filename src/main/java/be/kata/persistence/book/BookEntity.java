@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import org.springframework.lang.NonNull;
 
 import java.util.Objects;
 
@@ -12,39 +13,45 @@ import java.util.Objects;
 public class BookEntity {
 
     @Id
+    @NonNull
     @Column(name = "ID")
     private String id;
 
+    @NonNull
     @Column(name = "NAME")
     private String name;
 
+    @NonNull
     @Column(name = "AUTHOR")
     private String author;
 
     @Column(name = "COUNT")
     private int count;
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
+    @NonNull
     public String getId() {
         return id;
     }
 
+    public void setId(@NonNull String id) {
+        this.id = id;
+    }
+
+    @NonNull
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(@NonNull String name) {
         this.name = name;
     }
 
+    @NonNull
     public String getAuthor() {
         return author;
     }
 
-    public void setAuthor(String author) {
+    public void setAuthor(@NonNull String author) {
         this.author = author;
     }
 

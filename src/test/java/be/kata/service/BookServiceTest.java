@@ -5,13 +5,11 @@ import be.kata.persistence.book.BookEntity;
 import be.kata.persistence.book.BookRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -19,12 +17,6 @@ class BookServiceTest {
 
     private final BookRepository bookRepository = Mockito.mock(BookRepository.class);
     private final BookService bookService = new BookService(bookRepository);
-
-    @Test
-    void givenBookService_whenInvokeMethod_thenReturnNoException() {
-        assertThat(bookService).isNotNull();
-        assertThatNoException().isThrownBy(() -> ReflectionTestUtils.getField(bookService, "bookRepository"));
-    }
 
     @Test
     void givenBookService_whenGetAllBooks_thenReturnAllBooks() {

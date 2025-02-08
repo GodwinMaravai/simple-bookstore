@@ -21,6 +21,7 @@ public class UserEntity {
     @Column(name = "NAME", nullable = false, unique = true)
     private String name;
 
+    @Column(name = "PASSWORD")
     private String password;
 
     @Column(name = "NRN")

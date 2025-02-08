@@ -35,8 +35,8 @@ class BookControllerTest {
 
     @Test
     void giveMockMvc_whenGet_thenReturnBooksWithStatusCode200() throws Exception {
-        Book book1 = new Book("B1", "Book1", "Author1", 1);
-        Book book2 = new Book("B2", "Book2", "Author2", 2);
+        Book book1 = new Book("B1", "Book1", "Author1", 1, 1);
+        Book book2 = new Book("B2", "Book2", "Author2", 5, 2);
 
         when(bookService.getAllBooks()).thenReturn(List.of(book1, book2));
 
@@ -45,8 +45,8 @@ class BookControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString())
-                .isEqualTo("[{\"id\":\"B1\",\"title\":\"Book1\",\"author\":\"Author1\",\"stock\":1}," +
-                        "{\"id\":\"B2\",\"title\":\"Book2\",\"author\":\"Author2\",\"stock\":2}]");
+                .isEqualTo("[{\"id\":\"B1\",\"title\":\"Book1\",\"author\":\"Author1\",\"price\":1,\"stock\":1}," +
+                        "{\"id\":\"B2\",\"title\":\"Book2\",\"author\":\"Author2\",\"price\":5,\"stock\":2}]");
         verify(bookService).getAllBooks();
     }
 
@@ -63,7 +63,7 @@ class BookControllerTest {
 
     @Test
     void givenId_whenGetById_thenReturnBookWithStatusCode200() throws Exception {
-        Book book1 = new Book("B1", "Book1", "Author1", 1);
+        Book book1 = new Book("B1", "Book1", "Author1", 2, 1);
 
         when(bookService.getBookById("B1")).thenReturn(Optional.of(book1));
 
@@ -72,7 +72,7 @@ class BookControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString())
-                .isEqualTo("{\"id\":\"B1\",\"title\":\"Book1\",\"author\":\"Author1\",\"stock\":1}");
+                .isEqualTo("{\"id\":\"B1\",\"title\":\"Book1\",\"author\":\"Author1\",\"price\":2,\"stock\":1}");
         verify(bookService).getBookById("B1");
     }
 
@@ -109,7 +109,7 @@ class BookControllerTest {
     @Test
     void givenBooks_whenSubmit_thenReturnWithStatusCode201() throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
-        Book book = new Book("B1", "Book1", "Author1", 2);
+        Book book = new Book("B1", "Book1", "Author1", 10, 2);
         mvc.perform(MockMvcRequestBuilders
                         .post("/books")
                         .content(objectMapper.writeValueAsString(List.of(book)))

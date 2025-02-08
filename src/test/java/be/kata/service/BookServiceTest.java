@@ -35,9 +35,10 @@ class BookServiceTest {
         bookEntity.setName("Book1");
         bookEntity.setAuthor("Author1");
         bookEntity.setCount(2);
+        bookEntity.setPrice(3);
         when(bookRepository.findById("B1")).thenReturn(Optional.of(bookEntity));
 
-        Book book = new Book("B1", "Book1", "Author1", 2);
+        Book book = new Book("B1", "Book1", "Author1", 3, 2);
 
         assertThat(bookService.getBookById("B1")).isNotNull().hasValue(book);
         verify(bookRepository).findById("B1");
@@ -45,7 +46,7 @@ class BookServiceTest {
 
     @Test
     void givenUser_whenSubmit_thenReturnTrue() {
-        Book book = new Book("B1", "Book1", "Author1", 2);
+        Book book = new Book("B1", "Book1", "Author1", 1, 2);
 
         assertThat(bookService.submit(List.of(book))).isTrue();
 
@@ -56,6 +57,7 @@ class BookServiceTest {
                 .returns("B1", BookEntity::getId)
                 .returns("Book1", BookEntity::getName)
                 .returns("Author1", BookEntity::getAuthor)
-                .returns(2, BookEntity::getCount);
+                .returns(2, BookEntity::getCount)
+                .returns(1, BookEntity::getPrice);
     }
 }

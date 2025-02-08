@@ -26,6 +26,7 @@ class BookRepositoryTest {
         bookEntity.setId("B1");
         bookEntity.setName("Book1");
         bookEntity.setAuthor("Author1");
+        bookEntity.setPrice(1);
         bookEntity.setCount(2);
         bookRepository.save(bookEntity);
     }

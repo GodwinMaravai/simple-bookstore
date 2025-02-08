@@ -1,8 +1,10 @@
 package be.kata;
 
 import be.kata.api.BookController;
+import be.kata.api.CartController;
 import be.kata.api.UserController;
 import be.kata.service.BookService;
+import be.kata.service.CartService;
 import be.kata.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,5 +48,11 @@ class BookStoreAppTest {
         assertThat(context.getBean("carRepository")).isNotNull();
         assertThat(context.getBean("cartService")).isNotNull();
         assertThat(context.getBean("cartController")).isNotNull();
+
+        CartService cartService = (CartService) context.getBean("cartService");
+        assertThatNoException().isThrownBy(() -> ReflectionTestUtils.getField(cartService, "carRepository"));
+
+        CartController cartController = (CartController) context.getBean("cartController");
+        assertThatNoException().isThrownBy(() -> ReflectionTestUtils.getField(cartController, "cartService"));
     }
 }

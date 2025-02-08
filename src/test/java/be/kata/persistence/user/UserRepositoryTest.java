@@ -43,6 +43,12 @@ class UserRepositoryTest {
     }
 
     @Test
+    void givenUserRepository_whenFindUserEntityByName_thenReturnUserEntity() {
+        assertThat(userRepository.findUserEntityByName("User2"))
+                .isEqualTo(userEntity);
+    }
+
+    @Test
     void givenUserRepository_whenSave_thenReturnUserEntity() {
         userEntity.setName("USER");
         userEntity.setNrn("12345678901");

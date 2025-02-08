@@ -3,11 +3,13 @@ package be.kata.service;
 import be.kata.api.model.User;
 import be.kata.persistence.user.UserEntity;
 import be.kata.persistence.user.UserRepository;
-import be.kata.persistence.user.UserRole;
+import be.kata.security.BookStoreUserRole;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
@@ -32,20 +34,21 @@ class UserServiceTest {
         UserEntity user = new UserEntity();
         user.setName("adminuser");
         user.setPassword("pass");
-        user.setRole(UserRole.ADMIN);
+        user.setRoles(BookStoreUserRole.ADMIN.name());
 
         when(userRepository.findUserEntityByName("User1")).thenReturn(user);
 
         assertThat(userService.findUserByName("User1"))
                 .returns("adminuser", User::name)
                 .returns("pass", User::password)
-                .returns(UserRole.ADMIN, User::role);
+                .returns(List.of(BookStoreUserRole.ADMIN), User::roles);
         verify(userRepository).findUserEntityByName("User1");
     }
 
     @Test
     void givenUser_whenCreateUser_thenReturnTrue() {
-        User user = new User("User2", "pass", "1234567891", UserRole.USER);
+        User user = new User("User2", "pass", "1234567891", List.of(BookStoreUserRole.USER));
+        when(passwordEncoder.encode("pass")).thenReturn("encodedPass");
 
         assertThat(userService.createUser(user)).isTrue();
 
@@ -56,7 +59,7 @@ class UserServiceTest {
                 .returns(0L, UserEntity::getId)
                 .returns("User2", UserEntity::getName)
                 .returns("1234567891", UserEntity::getNrn)
-                .returns("pass", UserEntity::getPassword)
-                .returns(UserRole.USER, UserEntity::getRole);
+                .returns("encodedPass", UserEntity::getPassword)
+                .returns(BookStoreUserRole.USER.name(), UserEntity::getRoles);
     }
 }

@@ -3,7 +3,7 @@ package be.kata.api;
 import be.kata.api.model.User;
 import be.kata.persistence.user.UserEntity;
 import be.kata.persistence.user.UserRepository;
-import be.kata.persistence.user.UserRole;
+import be.kata.security.BookStoreUserRole;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +17,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.List;
+
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -26,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                 "spring.datasource.url=jdbc:h2:mem:testdb",
                 "spring.jpa.hibernate.ddl-auto=create-drop"
         })
-class UserControllerTest {
+class UserControllerIntegrationTest {
 
     private MockMvc mvc;
     private UserEntity userEntity;
@@ -45,7 +47,7 @@ class UserControllerTest {
         userEntity.setName("user1");
         userEntity.setNrn("12345678902");
         userEntity.setPassword("password");
-        userEntity.setRole(UserRole.ADMIN);
+        userEntity.setRoles(BookStoreUserRole.ADMIN.name());
         userRepository.save(userEntity);
 
         mvc = MockMvcBuilders
@@ -80,7 +82,7 @@ class UserControllerTest {
     @Test
     void givenUser_whenRegister_thenReturnWithStatusCode201() throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
-        User user = new User("user2", "pass", "12345678901", UserRole.USER);
+        User user = new User("user2", "pass", "12345678901", List.of(BookStoreUserRole.USER));
         mvc.perform(MockMvcRequestBuilders
                         .post("/register")
                         .content(objectMapper.writeValueAsString(user))
@@ -92,7 +94,7 @@ class UserControllerTest {
     @Test
     void givenAdmin_whenRegister_thenReturnWithStatusCode201() throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
-        User user = new User("adminuser", "pass", "12345678901", UserRole.ADMIN);
+        User user = new User("adminuser", "pass", "12345678901", List.of(BookStoreUserRole.ADMIN));
         mvc.perform(MockMvcRequestBuilders
                         .post("/register")
                         .content(objectMapper.writeValueAsString(user))

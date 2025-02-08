@@ -5,19 +5,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
-public class BookStoreUserPrincipal implements UserDetails {
-
-    private static final long serialVersionUID = 1L;
-
-    private final User user;
-
-    public BookStoreUserPrincipal(User user) {
-        this.user = user;
-    }
+public record BookStoreUserPrincipal(User user) implements UserDetails {
 
     @Override
     public String getUsername() {
@@ -31,13 +21,7 @@ public class BookStoreUserPrincipal implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(user.role().name()));
-        return authorities;
-    }
-
-    public User getUser() {
-        return user;
+        return user.roles().stream().map(role -> new SimpleGrantedAuthority(role.name())).toList();
     }
 
 }

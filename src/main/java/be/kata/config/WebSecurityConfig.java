@@ -32,25 +32,4 @@ public class WebSecurityConfig {
                 .httpBasic(Customizer.withDefaults());
         return http.build();
     }
-
-/*    @Bean
-    public AuthenticationManager authenticationManager(DaoAuthenticationProvider daoAuthenticationProvider) {
-        ProviderManager authenticationManager = new ProviderManager(List.of(daoAuthenticationProvider));
-        authenticationManager.setAuthenticationEventPublisher(authenticationEventPublisher());
-        return authenticationManager;
-    }
-
-    // Define authentication methods.
-    @Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider(PasswordEncoder bCryptPasswordEncoder, BookStoreUserDetailsService appUserService) {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setPasswordEncoder(bCryptPasswordEncoder);
-        provider.setUserDetailsService(appUserService);
-        return provider;
-    }
-
-    @Bean
-    public AuthenticationEventPublisher authenticationEventPublisher() {
-        return new DefaultAuthenticationEventPublisher();
-    }*/
 }

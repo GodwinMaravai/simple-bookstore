@@ -27,7 +27,7 @@ public class UserEntity {
     private String nrn;
 
     @Column(name = "ROLE")
-    private UserRole role;
+    private String roles;
 
     public long getId() {
         return id;
@@ -61,23 +61,23 @@ public class UserEntity {
         this.nrn = nrn;
     }
 
-    public UserRole getRole() {
-        return role;
+    public String getRoles() {
+        return roles;
     }
 
-    public void setRole(UserRole role) {
-        this.role = role;
+    public void setRoles(String roles) {
+        this.roles = roles;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof UserEntity that)) return false;
-        return id == that.id && Objects.equals(name, that.name) && Objects.equals(password, that.password) && Objects.equals(nrn, that.nrn) && role == that.role;
+        return id == that.id && Objects.equals(name, that.name) && Objects.equals(password, that.password) && Objects.equals(nrn, that.nrn) && Objects.equals(roles, that.roles);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, password, nrn, role);
+        return Objects.hash(id, name, password, nrn, roles);
     }
 }

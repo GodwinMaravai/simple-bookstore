@@ -3,9 +3,14 @@ package be.kata.service;
 import be.kata.api.model.User;
 import be.kata.persistence.user.UserEntity;
 import be.kata.persistence.user.UserRepository;
+import be.kata.security.BookStoreUserRole;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.springframework.util.ObjectUtils.isEmpty;
 
@@ -26,7 +31,7 @@ public class UserService {
 
     public User findUserByName(String name) {
         UserEntity userEntity = userRepository.findUserEntityByName(name);
-        return new User(userEntity.getName(), userEntity.getPassword(), userEntity.getNrn(), userEntity.getRole());
+        return new User(userEntity.getName(), userEntity.getPassword(), userEntity.getNrn(), roles(userEntity.getRoles()));
     }
 
     public boolean createUser(User user) {
@@ -35,8 +40,16 @@ public class UserService {
         userEntity.setNrn(user.nrn());
         userEntity.setName(user.name());
         userEntity.setPassword(passwordEncoder.encode(user.password()));
-        userEntity.setRole(user.role());
+        userEntity.setRoles(rolesAsString(user.roles()));
         userRepository.save(userEntity);
         return true;
+    }
+
+    private String rolesAsString(List<BookStoreUserRole> roles) {
+        return roles.stream().map(Enum::name).collect(Collectors.joining(";"));
+    }
+
+    private List<BookStoreUserRole> roles(String roles) {
+        return Arrays.stream(roles.split(";")).map(BookStoreUserRole::valueOf).toList();
     }
 }

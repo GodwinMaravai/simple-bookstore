@@ -20,7 +20,7 @@ public class UserEntity {
     @SequenceGenerator(name = "UserIdGenerator", sequenceName = "T_USER_SEQ", allocationSize = 1)
     private long id;
 
-    @Column(name = "NAME")
+    @Column(name = "NAME", unique = true)
     private String name;
 
     @Column(name = "NRN")

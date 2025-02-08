@@ -29,9 +29,6 @@ public class UserEntity {
     @Column(name = "GSM")
     private String gsm;
 
-    @Column(name = "CONSENT_STATUS")
-    private boolean isConsent;
-
     public long getId() {
         return id;
     }
@@ -64,23 +61,15 @@ public class UserEntity {
         this.gsm = gsm;
     }
 
-    public boolean isConsent() {
-        return isConsent;
-    }
-
-    public void setConsent(boolean consent) {
-        isConsent = consent;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof UserEntity that)) return false;
-        return id == that.id && isConsent == that.isConsent && Objects.equals(name, that.name) && Objects.equals(nrn, that.nrn) && Objects.equals(gsm, that.gsm);
+        return id == that.id && Objects.equals(name, that.name) && Objects.equals(nrn, that.nrn) && Objects.equals(gsm, that.gsm);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, nrn, gsm, isConsent);
+        return Objects.hash(id, name, nrn, gsm);
     }
 }

@@ -20,11 +20,26 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
     <dependencies>
         <!-- Starter for building RESTful API with default embedded server Tomcat -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- Starter for using Spring Data JPA with Hibernate -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <!-- A fast SQL database that can run embedded or a server mode. Storage can be disk-based or in-memory.
+             Scope 'runtime' is useful for dependencies required for unit tests and at runtime, but not at compile time. -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
         </dependency>
 
         <!-- Test Dependencies -->

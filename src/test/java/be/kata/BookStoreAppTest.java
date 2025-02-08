@@ -42,5 +42,9 @@ class BookStoreAppTest {
 
         UserController userController = (UserController) context.getBean("userController");
         assertThatNoException().isThrownBy(() -> ReflectionTestUtils.getField(userController, "userService"));
+
+        assertThat(context.getBean("carRepository")).isNotNull();
+        assertThat(context.getBean("cartService")).isNotNull();
+        assertThat(context.getBean("cartController")).isNotNull();
     }
 }

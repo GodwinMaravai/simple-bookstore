@@ -6,6 +6,8 @@ import be.kata.persistence.user.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import static org.springframework.util.ObjectUtils.isEmpty;
+
 @Service
 public class UserService {
 
@@ -15,8 +17,8 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public boolean isUserExist(long id) {
-        return userRepository.findById(id).isPresent();
+    public boolean isUserExist(String name) {
+        return !isEmpty(userRepository.findUserEntityByName(name));
     }
 
     public boolean createUser(User user) {

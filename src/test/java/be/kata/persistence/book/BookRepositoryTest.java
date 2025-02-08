@@ -23,6 +23,6 @@ class BookRepositoryTest {
 
     @Test
     void givenBookRepository_whenInvokeMethod_thenReturn_findByIdMethod() {
-        assertThatNoException().isThrownBy(() -> ReflectionTestUtils.invokeMethod(bookRepository, "findById"));
+        assertThatNoException().isThrownBy(() -> ReflectionTestUtils.invokeMethod(bookRepository, "findById", "B1"));
     }
 }

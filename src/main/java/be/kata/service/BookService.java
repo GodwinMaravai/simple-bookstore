@@ -1,6 +1,6 @@
 package be.kata.service;
 
-import be.kata.persistence.book.BookEntity;
+import be.kata.api.model.Book;
 import be.kata.persistence.book.BookRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +16,14 @@ public class BookService {
         this.bookRepository = bookRepository;
     }
 
-    public List<BookEntity> getAllBooks() {
-        return bookRepository.findAll();
+    public List<Book> getAllBooks() {
+        return bookRepository.findAll().stream()
+                .map(entity -> new Book(entity.getId(), entity.getName(), entity.getAuthor(), entity.getCount()))
+                .toList();
     }
 
-    public Optional<BookEntity> getBookById(String id) {
-        return bookRepository.findById(id);
+    public Optional<Book> getBookById(String id) {
+        return bookRepository.findById(id)
+                .map(entity -> new Book(entity.getId(), entity.getName(), entity.getAuthor(), entity.getCount()));
     }
 }

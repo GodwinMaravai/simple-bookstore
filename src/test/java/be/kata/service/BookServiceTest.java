@@ -1,5 +1,6 @@
 package be.kata.service;
 
+import be.kata.api.model.Book;
 import be.kata.persistence.book.BookEntity;
 import be.kata.persistence.book.BookRepository;
 import org.junit.jupiter.api.Test;
@@ -37,9 +38,14 @@ class BookServiceTest {
     void givenBookId_whenGetBookById_thenReturnABook() {
         BookEntity bookEntity = new BookEntity();
         bookEntity.setId("B1");
+        bookEntity.setName("Book1");
+        bookEntity.setAuthor("Author1");
+        bookEntity.setCount(2);
         when(bookRepository.findById("B1")).thenReturn(Optional.of(bookEntity));
 
-        assertThat(bookService.getBookById("B1")).isNotNull().hasValue(bookEntity);
+        Book book = new Book("B1", "Book1", "Author1", 2);
+
+        assertThat(bookService.getBookById("B1")).isNotNull().hasValue(book);
         verify(bookRepository).findById("B1");
     }
 }

@@ -1,16 +1,14 @@
 package be.kata.api.model;
 
-
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.NotEmpty;
+import be.kata.persistence.user.UserRole;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-@Valid
 public record User(
-        long id,
-        @Max(100) @NotEmpty String name,
-        @NotEmpty @Pattern(regexp = "^\\d{11}$") @Size(min = 11, max = 11) String nrn,
-        @NotEmpty @Pattern(regexp = "^\\d{10}$") @Size(min = 10, max = 10) String gsm) {
+        @NotBlank String name,
+        @NotBlank String password,
+        @NotBlank @Pattern(regexp = "^[0-9]{11}$") @Size(min = 11, max = 11) String nrn,
+        @NotNull UserRole role) {
 }

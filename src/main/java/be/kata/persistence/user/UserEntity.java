@@ -5,7 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 import java.util.Objects;
@@ -16,18 +15,19 @@ public class UserEntity {
 
     @Id
     @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "UserIdGenerator")
-    @SequenceGenerator(name = "UserIdGenerator", sequenceName = "T_USER_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(name = "NAME", unique = true)
+    @Column(name = "NAME", nullable = false, unique = true)
     private String name;
+
+    private String password;
 
     @Column(name = "NRN")
     private String nrn;
 
-    @Column(name = "GSM")
-    private String gsm;
+    @Column(name = "ROLE")
+    private UserRole role;
 
     public long getId() {
         return id;
@@ -45,6 +45,14 @@ public class UserEntity {
         this.name = name;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String getNrn() {
         return nrn;
     }
@@ -53,23 +61,23 @@ public class UserEntity {
         this.nrn = nrn;
     }
 
-    public String getGsm() {
-        return gsm;
+    public UserRole getRole() {
+        return role;
     }
 
-    public void setGsm(String gsm) {
-        this.gsm = gsm;
+    public void setRole(UserRole role) {
+        this.role = role;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof UserEntity that)) return false;
-        return id == that.id && Objects.equals(name, that.name) && Objects.equals(nrn, that.nrn) && Objects.equals(gsm, that.gsm);
+        return id == that.id && Objects.equals(name, that.name) && Objects.equals(password, that.password) && Objects.equals(nrn, that.nrn) && role == that.role;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, nrn, gsm);
+        return Objects.hash(id, name, password, nrn, role);
     }
 }

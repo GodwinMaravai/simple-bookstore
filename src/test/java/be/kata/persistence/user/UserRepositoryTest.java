@@ -25,7 +25,6 @@ class UserRepositoryTest {
         userEntity = new UserEntity();
         userEntity.setName("User2");
         userEntity.setNrn("12345678902");
-        userEntity.setGsm("1234567891");
         userRepository.save(userEntity);
     }
 
@@ -52,7 +51,6 @@ class UserRepositoryTest {
     void givenUserRepository_whenSave_thenReturnUserEntity() {
         userEntity.setName("USER");
         userEntity.setNrn("12345678901");
-        userEntity.setGsm("1234567890");
 
         assertThat(userRepository.save(userEntity))
                 .isNotNull()

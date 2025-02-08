@@ -21,13 +21,13 @@ public class BookService {
 
     public List<Book> getAllBooks() {
         return bookRepository.findAll().stream()
-                .map(entity -> new Book(entity.getId(), entity.getName(), entity.getAuthor(), entity.getCount()))
+                .map(entity -> new Book(entity.getId(), entity.getName(), entity.getAuthor(), entity.getPrice(), entity.getCount()))
                 .toList();
     }
 
     public Optional<Book> getBookById(String id) {
         return bookRepository.findById(id)
-                .map(entity -> new Book(entity.getId(), entity.getName(), entity.getAuthor(), entity.getCount()));
+                .map(entity -> new Book(entity.getId(), entity.getName(), entity.getAuthor(), entity.getPrice(), entity.getCount()));
     }
 
     public boolean submit(List<Book> books) {
@@ -36,6 +36,7 @@ public class BookService {
             bookEntity.setId(book.id());
             bookEntity.setName(book.title());
             bookEntity.setAuthor(book.author());
+            bookEntity.setPrice(book.price());
             bookEntity.setCount(book.stock());
             return bookEntity;
         }).collect(Collectors.toSet());

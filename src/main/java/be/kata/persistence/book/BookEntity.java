@@ -25,6 +25,9 @@ public class BookEntity {
     @Column(name = "AUTHOR")
     private String author;
 
+    @Column(name = "PRICE")
+    private int price;
+
     @Column(name = "COUNT")
     private int count;
 
@@ -55,6 +58,14 @@ public class BookEntity {
         this.author = author;
     }
 
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
     public int getCount() {
         return count;
     }
@@ -67,11 +78,11 @@ public class BookEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof BookEntity that)) return false;
-        return count == that.count && Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(author, that.author);
+        return price == that.price && count == that.count && Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(author, that.author);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, author, count);
+        return Objects.hash(id, name, author, price, count);
     }
 }

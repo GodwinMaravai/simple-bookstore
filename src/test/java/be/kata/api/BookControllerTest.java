@@ -2,6 +2,7 @@ package be.kata.api;
 
 import be.kata.api.model.Book;
 import be.kata.service.BookService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -99,5 +100,16 @@ class BookControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
         verify(bookService).getBookById("B1");
+    }
+
+    @Test
+    void givenBooks_whenSubmit_thenReturnWithStatusCode201() throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Book book = new Book("B1", "Book1", "Author1", 2);
+        mvc.perform(MockMvcRequestBuilders
+                        .post("/books")
+                        .content(objectMapper.writeValueAsString(List.of(book)))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated());
     }
 }

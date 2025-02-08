@@ -29,5 +29,9 @@ class BookStoreAppTest {
 
         BookController bookController = (BookController) context.getBean("bookController");
         ReflectionTestUtils.getField(bookController, "bookService");
+
+        assertThat(context.getBean("userRepository")).isNotNull();
+        assertThat(context.getBean("userService")).isNotNull();
+        assertThat(context.getBean("userController")).isNotNull();
     }
 }

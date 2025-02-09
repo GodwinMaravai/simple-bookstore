@@ -24,7 +24,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/login")
+    @GetMapping("/login")
     public ResponseEntity<String> login(Authentication authentication) {
         return ResponseEntity.ok("Welcome '%s'".formatted(authentication.getName()));
     }

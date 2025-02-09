@@ -41,6 +41,6 @@ public class OrderEntity {
     @Column(name = "TOTAL_ITEM")
     private int totalItem;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, optional = false)
     private CartEntity cart;
 }

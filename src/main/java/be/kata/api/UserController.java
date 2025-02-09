@@ -1,5 +1,6 @@
 package be.kata.api;
 
+import be.kata.api.model.DisplayUser;
 import be.kata.api.model.User;
 import be.kata.service.UserService;
 import jakarta.validation.Valid;
@@ -11,6 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+import java.util.Optional;
+
 @RestController
 public class UserController {
 
@@ -20,9 +24,16 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<String> login(Authentication authentication) {
         return ResponseEntity.ok("Welcome '%s'".formatted(authentication.getName()));
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity<List<DisplayUser>> get() {
+        return Optional.of(userService.getAllUser())
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.noContent().build());
     }
 
     @PostMapping(value = "/register", consumes = "application/json")

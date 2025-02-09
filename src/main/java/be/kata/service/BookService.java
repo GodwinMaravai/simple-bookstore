@@ -36,8 +36,8 @@ public class BookService {
             bookEntity.setId(book.id());
             bookEntity.setName(book.title());
             bookEntity.setAuthor(book.author());
-            bookEntity.setPrice(book.price());
-            bookEntity.setCount(book.stock());
+            bookEntity.setPrice(book.totalPrice());
+            bookEntity.setCount(book.count());
             return bookEntity;
         }).collect(Collectors.toSet());
         bookRepository.saveAll(bookEntities);

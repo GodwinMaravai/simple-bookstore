@@ -18,7 +18,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-class CarServiceTest {
+class CartServiceTest {
 
     private final BookRepository bookRepository = Mockito.mock(BookRepository.class);
     private final UserRepository userRepository = Mockito.mock(UserRepository.class);

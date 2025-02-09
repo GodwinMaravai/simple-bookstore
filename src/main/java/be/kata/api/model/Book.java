@@ -1,4 +1,11 @@
 package be.kata.api.model;
 
-public record Book(String id, String title, String author, int price, int stock) {
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
+public record Book(@NotBlank String id,
+                   @NotBlank String title,
+                   @NotBlank String author,
+                   @NotNull int totalPrice,
+                   @NotNull int count) {
 }

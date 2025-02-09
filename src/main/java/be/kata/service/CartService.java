@@ -53,7 +53,7 @@ public class CartService {
             cartItemEntity.setCount(bookCount.count());
             return cartItemEntity;
         }
-        throw new IllegalArgumentException("Out of stock");
+        throw new IllegalArgumentException("Out of Stock");
     }
 
 }

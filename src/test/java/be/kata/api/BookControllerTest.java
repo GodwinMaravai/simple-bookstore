@@ -48,8 +48,8 @@ class BookControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString())
-                .isEqualTo("[{\"id\":\"B1\",\"title\":\"Book1\",\"author\":\"Author1\",\"price\":1,\"stock\":1}," +
-                        "{\"id\":\"B2\",\"title\":\"Book2\",\"author\":\"Author2\",\"price\":5,\"stock\":2}]");
+                .isEqualTo("[{\"id\":\"B1\",\"title\":\"Book1\",\"author\":\"Author1\",\"totalPrice\":1,\"count\":1}," +
+                        "{\"id\":\"B2\",\"title\":\"Book2\",\"author\":\"Author2\",\"totalPrice\":5,\"count\":2}]");
         verify(bookService).getAllBooks();
     }
 
@@ -75,7 +75,7 @@ class BookControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString())
-                .isEqualTo("{\"id\":\"B1\",\"title\":\"Book1\",\"author\":\"Author1\",\"price\":2,\"stock\":1}");
+                .isEqualTo("{\"id\":\"B1\",\"title\":\"Book1\",\"author\":\"Author1\",\"totalPrice\":2,\"count\":1}");
         verify(bookService).getBookById("B1");
     }
 

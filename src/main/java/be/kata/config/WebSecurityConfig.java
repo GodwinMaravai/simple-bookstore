@@ -1,5 +1,6 @@
 package be.kata.config;
 
+import be.kata.security.BookStoreUserRole;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -27,8 +28,9 @@ public class WebSecurityConfig {
                         authorizationManagerRequestMatcherRegistry
                                 .requestMatchers(new AntPathRequestMatcher("/register", "POST"))
                                 .permitAll()
-                                .requestMatchers("/books", "POST").hasRole("ADMIN")
-                                .requestMatchers("/order", "PUT", "POST").hasRole("ADMIN")
+                                .requestMatchers(new AntPathRequestMatcher("/books", "POST")).hasRole(BookStoreUserRole.ADMIN.name())
+                                .requestMatchers(new AntPathRequestMatcher("/order", "POST")).hasRole(BookStoreUserRole.ADMIN.name())
+                                .requestMatchers(new AntPathRequestMatcher("/order", "PUT")).hasRole(BookStoreUserRole.ADMIN.name())
                                 .anyRequest()
                                 .authenticated())
                 .httpBasic(Customizer.withDefaults());

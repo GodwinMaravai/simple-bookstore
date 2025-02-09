@@ -32,11 +32,14 @@ public class BookService {
 
     public boolean submit(List<Book> books) {
         Set<BookEntity> bookEntities = books.stream().map(book -> {
+            if (book.price() <= 0 || book.count() <= 0) {
+                throw new IllegalArgumentException("Invalid book price or count");
+            }
             BookEntity bookEntity = new BookEntity();
             bookEntity.setId(book.id());
             bookEntity.setName(book.title());
             bookEntity.setAuthor(book.author());
-            bookEntity.setPrice(book.totalPrice());
+            bookEntity.setPrice(book.price());
             bookEntity.setCount(book.count());
             return bookEntity;
         }).collect(Collectors.toSet());

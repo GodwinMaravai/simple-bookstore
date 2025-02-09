@@ -4,6 +4,7 @@ import be.kata.api.model.Book;
 import be.kata.service.BookService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,7 +49,7 @@ public class BookController {
     }
 
     @PostMapping(consumes = "application/json")
-    public ResponseEntity<String> submit(@Valid @RequestBody List<@Valid Book> books) {
+    public ResponseEntity<String> submit(@Valid @RequestBody @NotNull List<@Valid @NotNull Book> books) {
         if (isEmpty(books)) {
             return ResponseEntity.badRequest().build();
         }

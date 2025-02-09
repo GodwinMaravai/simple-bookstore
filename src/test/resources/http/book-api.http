@@ -8,13 +8,15 @@ Authorization: Basic YWRtaW46YWRtaW4=
     "id": "B21",
     "title": "codebook",
     "author": "admin",
-    "count": 1
+    "price": 56,
+    "count": 10
   },
   {
     "id": "B22",
     "title": "logbook",
     "author": "admin",
-    "count": 1
+    "price": 87,
+    "count": 20
   }
 ]
 
@@ -26,7 +28,7 @@ Authorization: Basic YWRtaW46YWRtaW4=
 GET http://localhost:8080/books/B22
 Authorization: Basic YWRtaW46YWRtaW4=
 
-### USER - BOOK
+### USER - BOOK - User don't have authorization, so response code is 403
 POST http://localhost:8080/books
 Content-Type: application/json
 Authorization: Basic dXNlcjp1c2Vy
@@ -36,13 +38,15 @@ Authorization: Basic dXNlcjp1c2Vy
     "id": "B21",
     "title": "codebook",
     "author": "admin",
-    "stock": 1
+    "price": 25,
+    "count": 1
   },
   {
     "id": "B22",
     "title": "logbook",
     "author": "admin",
-    "stock": 1
+    "price": 100,
+    "count": 1
   }
 ]
 

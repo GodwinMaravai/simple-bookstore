@@ -1,34 +1,32 @@
 package be.kata.persistence.cart;
 
-import jakarta.persistence.CascadeType;
+import be.kata.persistence.book.BookEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Set;
-
 @Getter
 @Setter
 @EqualsAndHashCode
 @Entity
-@Table(name = "T_CART")
-public class CartEntity {
+@Table(name = "T_CART_ITEM")
+public class CartItemEntity {
 
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(name = "USER_ID")
-    private long userId;
+    @ManyToOne
+    private BookEntity book;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<CartItemEntity> items;
+    @Column(name = "COUNT")
+    private int count;
 }

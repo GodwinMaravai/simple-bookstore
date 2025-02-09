@@ -1,0 +1,42 @@
+### ADMIN - REGISTER - Any user can acces this endpoint
+POST http://localhost:8080/register
+Content-Type: application/json
+
+{
+  "name": "admin",
+  "password": "admin",
+  "nrn": "12345678901",
+  "roles": [
+    "USER",
+    "ADMIN"
+  ]
+}
+
+### ADMIN - LOGIN
+GET http://localhost:8080/login
+Authorization: Basic YWRtaW46YWRtaW4=
+
+### ADMIN GET USER
+GET http://localhost:8080/user
+Authorization: Basic YWRtaW46YWRtaW4=
+
+### USER - REGISTER - Any user can access this endpoint
+POST http://localhost:8080/register
+Content-Type: application/json
+
+{
+  "name": "user",
+  "password": "user",
+  "nrn": "12345678902",
+  "roles": [
+    "USER"
+    ]
+}
+
+### USER - LOGIN
+GET http://localhost:8080/login
+Authorization: Basic dXNlcjp1c2Vy
+
+### USER GET - User don't have authorization, so response code is 403
+GET http://localhost:8080/user
+Authorization: Basic dXNlcjp1c2Vy

@@ -1,0 +1,52 @@
+### ADMIN - ORDER user's cart
+POST http://localhost:8080/order
+Content-Type: text/plain
+Authorization: Basic YWRtaW46YWRtaW4=
+
+user
+
+### ADMIN - ORDER admin's cart
+POST http://localhost:8080/order
+Content-Type: text/plain
+Authorization: Basic YWRtaW46YWRtaW4=
+
+admin
+
+### ADMIN - ORDER
+GET http://localhost:8080/order/1
+Content-Type: text/plain
+Authorization: Basic YWRtaW46YWRtaW4=
+
+### ADMIN - ORDER
+PUT http://localhost:8080/order
+Content-Type: application/json
+Authorization: Basic YWRtaW46YWRtaW4=
+
+{
+  "userId": 2,
+  "orderId": 1,
+  "status": "COMPLETED"
+}
+
+### USER - ORDER
+GET http://localhost:8080/order/2
+Content-Type: text/plain
+Authorization: Basic dXNlcjp1c2Vy
+
+### USER - ORDER - User don't have authorization, so response code is 403
+POST http://localhost:8080/order
+Content-Type: text/plain
+Authorization: Basic dXNlcjp1c2Vy
+
+user
+
+### USER - ORDER - User don't have authorization, so response code is 403
+PUT http://localhost:8080/order
+Content-Type: application/json
+Authorization: Basic dXNlcjp1c2Vy
+
+{
+  "userId": 1,
+  "orderId": 2,
+  "status": "CANCELLED"
+}

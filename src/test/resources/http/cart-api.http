@@ -1,0 +1,38 @@
+### USER - CART
+POST http://localhost:8080/cart
+Content-Type: application/json
+Authorization: Basic dXNlcjp1c2Vy
+
+{
+  "name": "user",
+  "bookCounts": [
+    {
+      "bookId": "B21",
+      "count": 10
+    },
+    {
+      "bookId": "B22",
+      "count": 10
+    }
+  ]
+}
+
+### ADMIN - CART
+POST http://localhost:8080/cart
+Content-Type: application/json
+Authorization: Basic YWRtaW46YWRtaW4=
+
+{
+  "name": "admin",
+  "bookCounts": [
+    {
+      "bookId": "B21",
+      "count": 1
+    },
+    {
+      "bookId": "B22",
+      "count": 1
+    }
+  ]
+}
+

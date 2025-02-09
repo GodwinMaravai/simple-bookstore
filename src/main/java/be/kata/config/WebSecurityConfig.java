@@ -28,6 +28,8 @@ public class WebSecurityConfig {
                         authorizationManagerRequestMatcherRegistry
                                 .requestMatchers(new AntPathRequestMatcher("/register", "POST"))
                                 .permitAll()
+                                .requestMatchers(new AntPathRequestMatcher("/h2-console")).hasRole(BookStoreUserRole.ADMIN.name())
+                                .requestMatchers(new AntPathRequestMatcher("/user", "GET")).hasRole(BookStoreUserRole.ADMIN.name())
                                 .requestMatchers(new AntPathRequestMatcher("/books", "POST")).hasRole(BookStoreUserRole.ADMIN.name())
                                 .requestMatchers(new AntPathRequestMatcher("/order", "POST")).hasRole(BookStoreUserRole.ADMIN.name())
                                 .requestMatchers(new AntPathRequestMatcher("/order", "PUT")).hasRole(BookStoreUserRole.ADMIN.name())

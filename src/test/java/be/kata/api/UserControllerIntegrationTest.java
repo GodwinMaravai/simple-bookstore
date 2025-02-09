@@ -64,7 +64,7 @@ class UserControllerIntegrationTest {
     @Test
     void givenNoUser_whenLogin_thenReturnWithStatusCode401() throws Exception {
         mvc.perform(MockMvcRequestBuilders
-                        .post("/login"))
+                        .get("/login"))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -72,7 +72,7 @@ class UserControllerIntegrationTest {
     @WithMockUser(username = "user1", roles = "ADMIN")
     void givenAdminUser_whenLogin_thenReturnWithStatusCode200() throws Exception {
         mvc.perform(MockMvcRequestBuilders
-                        .post("/login"))
+                        .get("/login"))
                 .andExpect(status().isOk());
     }
 

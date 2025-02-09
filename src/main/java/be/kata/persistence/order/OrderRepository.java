@@ -1,9 +1,9 @@
-package be.kata.persistence.cart;
+package be.kata.persistence.order;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CartRepository extends CrudRepository<CartEntity, Long> {
+public interface OrderRepository extends CrudRepository<OrderEntity, Long> {
 
 }

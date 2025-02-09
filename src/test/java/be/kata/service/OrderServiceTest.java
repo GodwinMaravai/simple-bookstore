@@ -20,8 +20,10 @@ import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 class OrderServiceTest {
@@ -119,7 +121,7 @@ class OrderServiceTest {
 
         when(orderRepository.findById(orderEntity.getId())).thenReturn(Optional.of(orderEntity));
 
-        Order order = orderService.updateStatus(1, OrderStatus.CANCELLED);
+        Order order = orderService.updateStatus(1, 1, OrderStatus.CANCELLED);
 
         assertThat(order)
                 .returns(1L, Order::orderId)
@@ -177,7 +179,7 @@ class OrderServiceTest {
         when(bookRepository.findById("B2")).thenReturn(Optional.of(bookEntity2));
         when(orderRepository.findById(orderEntity.getId())).thenReturn(Optional.of(orderEntity));
 
-        Order order = orderService.updateStatus(1, OrderStatus.COMPLETED);
+        Order order = orderService.updateStatus(1, 1, OrderStatus.COMPLETED);
 
         assertThat(order)
                 .returns(1L, Order::orderId)
@@ -209,6 +211,33 @@ class OrderServiceTest {
         verify(bookRepository).findById("B2");
         verify(orderRepository).save(orderEntity);
         verify(userRepository).save(userEntity);
+    }
+
+    @Test
+    void givenInvalidOrderId_whenUpdate_thenReturnOrder() {
+        when(orderRepository.findById(9L)).thenReturn(Optional.empty());
+
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> orderService.updateStatus(1, 9, OrderStatus.CANCELLED))
+                .withMessage("Order not found");
+
+        verify(orderRepository).findById(9L);
+        verifyNoMoreInteractions(orderRepository);
+    }
+
+    @Test
+    void givenInvalidUserId_whenUpdate_thenReturnOrder() {
+        OrderEntity orderEntity = new OrderEntity();
+        orderEntity.setId(9L);
+        orderEntity.setUserId(9L);
+        when(orderRepository.findById(9L)).thenReturn(Optional.of(orderEntity));
+
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> orderService.updateStatus(1, 9, OrderStatus.CANCELLED))
+                .withMessage("Invalid request");
+
+        verify(orderRepository).findById(9L);
+        verifyNoMoreInteractions(orderRepository);
     }
 
     @Test

@@ -8,11 +8,11 @@ Authorization: Basic dXNlcjp1c2Vy
   "bookCounts": [
     {
       "bookId": "B21",
-      "count": 1
+      "count": 10
     },
     {
       "bookId": "B22",
-      "count": 1
+      "count": 10
     }
   ]
 }

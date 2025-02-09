@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.util.ObjectUtils.isEmpty;
+import static org.springframework.util.StringUtils.hasText;
 
 @RestController
 @RequestMapping("/order")
@@ -37,15 +38,18 @@ public class OrderController {
         return ResponseEntity.ok(order);
     }
 
-    @PostMapping
+    @PostMapping(consumes = "text/plain")
     public ResponseEntity<Order> submit(@RequestBody @NotBlank String name) {
-        Order order = orderService.submit(name);
-        return ResponseEntity.status(HttpStatus.CREATED).body(order);
+        if (hasText(name)) {
+            Order order = orderService.submit(name);
+            return ResponseEntity.status(HttpStatus.CREATED).body(order);
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     @PutMapping
     public ResponseEntity<Order> update(@RequestBody @NotNull @Valid UserOrderStatus userOrderStatus) {
         Order order = orderService.updateStatus(userOrderStatus.userId(), userOrderStatus.orderId(), userOrderStatus.status());
-        return ResponseEntity.status(HttpStatus.CREATED).body(order);
+        return ResponseEntity.ok(order);
     }
 }

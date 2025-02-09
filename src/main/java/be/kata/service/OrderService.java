@@ -12,7 +12,6 @@ import be.kata.persistence.user.UserEntity;
 import be.kata.persistence.user.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -68,18 +67,8 @@ public class OrderService {
         if (userId == orderEntity.getUserId()) {
             if (orderEntity.getStatus().equals(OrderStatus.SUBMITTED)) {
                 orderEntity.setStatus(orderStatus);
-                List<Book> books = Collections.emptyList();
-                if (OrderStatus.CANCELLED.equals(orderStatus)) {
-                    orderEntity.setCart(null);
-                } else if (OrderStatus.COMPLETED.equals(orderStatus)) {
-                    UserEntity userEntity = userRepository.findById(orderEntity.getUserId())
-                            .orElseThrow(() -> new IllegalArgumentException("User not found"));
-                    userEntity.setCart(null);
-                    userRepository.save(userEntity);
-                    books = getOrderedBooks(orderEntity);
-                }
                 orderRepository.save(orderEntity);
-                return new Order(orderEntity.getId(), orderEntity.getUserId(), orderEntity.getStatus(), orderEntity.getTotalPrice(), orderEntity.getTotalItem(), books);
+                return new Order(orderEntity.getId(), orderEntity.getUserId(), orderEntity.getStatus(), orderEntity.getTotalPrice(), orderEntity.getTotalItem(), getOrderedBooks(orderEntity));
             }
             throw new IllegalArgumentException("The order '%s' with status '%s' should not be updated");
         }

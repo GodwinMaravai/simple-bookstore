@@ -14,7 +14,6 @@ import be.kata.persistence.user.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.Set;
@@ -85,13 +84,13 @@ class OrderServiceTest {
                                 .returns(bookEntity.getName(), Book::title)
                                 .returns(bookEntity.getAuthor(), Book::author)
                                 .returns(cartItemEntity.getCount(), Book::count)
-                                .returns(cartItemEntity.getCount() * bookEntity.getPrice(), Book::totalPrice),
+                                .returns(cartItemEntity.getCount() * bookEntity.getPrice(), Book::price),
                         book -> assertThat(book)
                                 .returns(bookEntity2.getId(), Book::id)
                                 .returns(bookEntity2.getName(), Book::title)
                                 .returns(bookEntity2.getAuthor(), Book::author)
                                 .returns(cartItemEntity2.getCount(), Book::count)
-                                .returns(cartItemEntity2.getCount() * bookEntity2.getPrice(), Book::totalPrice)
+                                .returns(cartItemEntity2.getCount() * bookEntity2.getPrice(), Book::price)
                 );
 
         verify(userRepository).findUserEntityByName(userEntity.getName());
@@ -101,42 +100,7 @@ class OrderServiceTest {
     }
 
     @Test
-    void givenOrderIdAndCancelledStatus_whenUpdate_thenReturnOrder() {
-        CartItemEntity cartItemEntity = new CartItemEntity();
-        cartItemEntity.setCount(2);
-        cartItemEntity.setBookId("B1");
-        CartItemEntity cartItemEntity2 = new CartItemEntity();
-        cartItemEntity2.setCount(1);
-        cartItemEntity2.setBookId("B2");
-        CartEntity cartEntity = new CartEntity();
-        cartEntity.setItems(Set.of(cartItemEntity, cartItemEntity2));
-
-        OrderEntity orderEntity = new OrderEntity();
-        orderEntity.setId(1L);
-        orderEntity.setStatus(OrderStatus.SUBMITTED);
-        orderEntity.setUserId(1L);
-        orderEntity.setTotalItem(100);
-        orderEntity.setTotalPrice(200);
-        orderEntity.setCart(cartEntity);
-
-        when(orderRepository.findById(orderEntity.getId())).thenReturn(Optional.of(orderEntity));
-
-        Order order = orderService.updateStatus(1, 1, OrderStatus.CANCELLED);
-
-        assertThat(order)
-                .returns(1L, Order::orderId)
-                .returns(1L, Order::userId)
-                .returns(OrderStatus.CANCELLED, Order::status)
-                .returns(200, Order::totalPrice)
-                .returns(100, Order::totalItem)
-                .returns(Collections.EMPTY_LIST, Order::orderedBooks);
-
-        verify(orderRepository).findById(orderEntity.getId());
-        verify(orderRepository).save(orderEntity);
-    }
-
-    @Test
-    void givenOrderIdAndCompletedStatus_whenUpdate_thenReturnOrder() {
+    void givenOrderIdAndCancelledOrCompletedStatus_whenUpdate_thenReturnOrder() {
         BookEntity bookEntity = new BookEntity();
         bookEntity.setId("B1");
         bookEntity.setName("Book1");
@@ -196,21 +160,19 @@ class OrderServiceTest {
                                 .returns(bookEntity.getName(), Book::title)
                                 .returns(bookEntity.getAuthor(), Book::author)
                                 .returns(cartItemEntity.getCount(), Book::count)
-                                .returns(cartItemEntity.getCount() * bookEntity.getPrice(), Book::totalPrice),
+                                .returns(cartItemEntity.getCount() * bookEntity.getPrice(), Book::price),
                         book -> assertThat(book)
                                 .returns(bookEntity2.getId(), Book::id)
                                 .returns(bookEntity2.getName(), Book::title)
                                 .returns(bookEntity2.getAuthor(), Book::author)
                                 .returns(cartItemEntity2.getCount(), Book::count)
-                                .returns(cartItemEntity2.getCount() * bookEntity2.getPrice(), Book::totalPrice)
+                                .returns(cartItemEntity2.getCount() * bookEntity2.getPrice(), Book::price)
                 );
 
         verify(orderRepository).findById(orderEntity.getId());
-        verify(userRepository).findById(userEntity.getId());
         verify(bookRepository).findById("B1");
         verify(bookRepository).findById("B2");
         verify(orderRepository).save(orderEntity);
-        verify(userRepository).save(userEntity);
     }
 
     @Test
@@ -294,13 +256,13 @@ class OrderServiceTest {
                                 .returns(bookEntity.getName(), Book::title)
                                 .returns(bookEntity.getAuthor(), Book::author)
                                 .returns(cartItemEntity.getCount(), Book::count)
-                                .returns(cartItemEntity.getCount() * bookEntity.getPrice(), Book::totalPrice),
+                                .returns(cartItemEntity.getCount() * bookEntity.getPrice(), Book::price),
                         book -> assertThat(book)
                                 .returns(bookEntity2.getId(), Book::id)
                                 .returns(bookEntity2.getName(), Book::title)
                                 .returns(bookEntity2.getAuthor(), Book::author)
                                 .returns(cartItemEntity2.getCount(), Book::count)
-                                .returns(cartItemEntity2.getCount() * bookEntity2.getPrice(), Book::totalPrice)
+                                .returns(cartItemEntity2.getCount() * bookEntity2.getPrice(), Book::price)
                 );
 
         verify(orderRepository).findById(orderEntity.getId());

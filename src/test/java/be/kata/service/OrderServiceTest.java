@@ -62,11 +62,11 @@ class OrderServiceTest {
         cartEntity.setItems(Set.of(cartItemEntity, cartItemEntity2));
         userEntity.setCart(cartEntity);
 
-        when(userRepository.findById(userEntity.getId())).thenReturn(Optional.of(userEntity));
+        when(userRepository.findUserEntityByName(userEntity.getName())).thenReturn(userEntity);
         when(bookRepository.findById("B1")).thenReturn(Optional.of(bookEntity));
         when(bookRepository.findById("B2")).thenReturn(Optional.of(bookEntity2));
 
-        Order order = orderService.submit(1);
+        Order order = orderService.submit("User2");
 
         assertThat(order)
                 .returns(0L, Order::orderId)
@@ -92,7 +92,7 @@ class OrderServiceTest {
                                 .returns(cartItemEntity2.getCount() * bookEntity2.getPrice(), Book::totalPrice)
                 );
 
-        verify(userRepository).findById(userEntity.getId());
+        verify(userRepository).findUserEntityByName(userEntity.getName());
         verify(bookRepository).findById("B1");
         verify(bookRepository).findById("B2");
         verify(orderRepository).save(any());

@@ -3,6 +3,7 @@ package be.kata.api;
 import be.kata.api.model.Cart;
 import be.kata.service.CartService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +22,7 @@ public class CartController {
     }
 
     @PostMapping
-    public ResponseEntity<String> submit(@Valid @RequestBody Cart userCart) {
+    public ResponseEntity<String> submit(@Valid @RequestBody @NotNull Cart userCart) {
         cartService.submit(userCart.name(), userCart.bookCounts());
         return ResponseEntity.status(HttpStatus.CREATED).body("Created cart for the user '%s'".formatted(userCart.name()));
     }

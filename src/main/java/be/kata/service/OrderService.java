@@ -62,25 +62,28 @@ public class OrderService {
         return new Order(orderEntity.getId(), orderEntity.getUserId(), orderEntity.getStatus(), orderEntity.getTotalPrice(), orderEntity.getTotalItem(), orderedBooks);
     }
 
-    public Order updateStatus(long orderId, OrderStatus orderStatus) {
+    public Order updateStatus(long userId, long orderId, OrderStatus orderStatus) {
         OrderEntity orderEntity = orderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("Order not found"));
-        if (orderEntity.getStatus().equals(OrderStatus.SUBMITTED)) {
-            orderEntity.setStatus(orderStatus);
-            List<Book> books = Collections.EMPTY_LIST;
-            if (OrderStatus.CANCELLED.equals(orderStatus)) {
-                orderEntity.setCart(null);
-            } else if (OrderStatus.COMPLETED.equals(orderStatus)) {
-                UserEntity userEntity = userRepository.findById(orderEntity.getUserId())
-                        .orElseThrow(() -> new IllegalArgumentException("User not found"));
-                userEntity.setCart(null);
-                userRepository.save(userEntity);
-                books = getOrderedBooks(orderEntity);
+        if (userId == orderEntity.getUserId()) {
+            if (orderEntity.getStatus().equals(OrderStatus.SUBMITTED)) {
+                orderEntity.setStatus(orderStatus);
+                List<Book> books = Collections.emptyList();
+                if (OrderStatus.CANCELLED.equals(orderStatus)) {
+                    orderEntity.setCart(null);
+                } else if (OrderStatus.COMPLETED.equals(orderStatus)) {
+                    UserEntity userEntity = userRepository.findById(orderEntity.getUserId())
+                            .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                    userEntity.setCart(null);
+                    userRepository.save(userEntity);
+                    books = getOrderedBooks(orderEntity);
+                }
+                orderRepository.save(orderEntity);
+                return new Order(orderEntity.getId(), orderEntity.getUserId(), orderEntity.getStatus(), orderEntity.getTotalPrice(), orderEntity.getTotalItem(), books);
             }
-            orderRepository.save(orderEntity);
-            return new Order(orderEntity.getId(), orderEntity.getUserId(), orderEntity.getStatus(), orderEntity.getTotalPrice(), orderEntity.getTotalItem(), books);
+            throw new IllegalArgumentException("The order '%s' with status '%s' should not be updated");
         }
-        throw new IllegalArgumentException("The order '%s' with status '%s' should not be updated");
+        throw new IllegalArgumentException("Invalid request");
     }
 
     public Order get(long orderId) {

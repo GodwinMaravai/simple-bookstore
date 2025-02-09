@@ -26,9 +26,6 @@ public class CartEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(name = "USER_ID")
-    private long userId;
-
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<CartItemEntity> items;
 }

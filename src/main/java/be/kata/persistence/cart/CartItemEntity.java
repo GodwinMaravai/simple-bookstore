@@ -1,12 +1,11 @@
 package be.kata.persistence.cart;
 
-import be.kata.persistence.book.BookEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -24,8 +23,8 @@ public class CartItemEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @ManyToOne
-    private BookEntity book;
+    @JoinColumn(name = "BOOK_ID")
+    private String bookId;
 
     @Column(name = "COUNT")
     private int count;

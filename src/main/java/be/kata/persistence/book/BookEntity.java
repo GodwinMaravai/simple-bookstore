@@ -1,17 +1,12 @@
 package be.kata.persistence.book;
 
-import be.kata.persistence.cart.CartItemEntity;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.Set;
 
 @Getter
 @Setter
@@ -35,8 +30,5 @@ public class BookEntity {
 
     @Column(name = "COUNT")
     private int count;
-
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<CartItemEntity> items;
 
 }

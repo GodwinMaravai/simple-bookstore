@@ -37,6 +37,6 @@ public class UserEntity {
     @Column(name = "ROLE")
     private String roles;
 
-    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private CartEntity cart;
 }

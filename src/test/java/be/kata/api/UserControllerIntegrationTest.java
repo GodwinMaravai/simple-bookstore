@@ -20,7 +20,6 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.List;
 
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
@@ -66,7 +65,6 @@ class UserControllerIntegrationTest {
     void givenNoUser_whenLogin_thenReturnWithStatusCode401() throws Exception {
         mvc.perform(MockMvcRequestBuilders
                         .get("/login"))
-                .andDo(print())
                 .andExpect(status().isUnauthorized());
     }
 
@@ -75,7 +73,6 @@ class UserControllerIntegrationTest {
     void givenAdminUser_whenLogin_thenReturnWithStatusCode200() throws Exception {
         mvc.perform(MockMvcRequestBuilders
                         .get("/login"))
-                .andDo(print())
                 .andExpect(status().isOk());
     }
 
@@ -87,7 +84,6 @@ class UserControllerIntegrationTest {
                         .post("/register")
                         .content(objectMapper.writeValueAsString(user))
                         .contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
                 .andExpect(status().isCreated());
     }
 

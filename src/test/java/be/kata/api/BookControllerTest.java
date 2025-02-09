@@ -1,6 +1,7 @@
 package be.kata.api;
 
 import be.kata.api.model.Book;
+import be.kata.config.BookStoreAppConfig;
 import be.kata.service.BookService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -32,6 +33,8 @@ class BookControllerTest {
 
     @MockitoBean
     private SecurityFilterChain securityFilterChain;
+
+    private final ObjectMapper objectMapper = new BookStoreAppConfig().objectMapper();
 
     @Test
     void giveMockMvc_whenGet_thenReturnBooksWithStatusCode200() throws Exception {
@@ -108,7 +111,6 @@ class BookControllerTest {
 
     @Test
     void givenBooks_whenSubmit_thenReturnWithStatusCode201() throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper();
         Book book = new Book("B1", "Book1", "Author1", 10, 2);
         mvc.perform(MockMvcRequestBuilders
                         .post("/books")

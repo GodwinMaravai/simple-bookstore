@@ -1,6 +1,6 @@
 package be.kata.service;
 
-import be.kata.api.model.BookCount;
+import be.kata.api.model.CartItem;
 import be.kata.persistence.book.BookEntity;
 import be.kata.persistence.book.BookRepository;
 import be.kata.persistence.user.UserEntity;
@@ -45,8 +45,8 @@ class CarServiceTest {
         bookEntity2.setCount(1);
         bookEntity2.setPrice(5);
 
-        BookCount bookCount = new BookCount("B1", 1);
-        BookCount bookCount2 = new BookCount("B2", 1);
+        CartItem bookCount = new CartItem("B1", 1);
+        CartItem bookCount2 = new CartItem("B2", 1);
 
         when(userRepository.findById(userEntity.getId())).thenReturn(Optional.of(userEntity));
 
@@ -74,7 +74,7 @@ class CarServiceTest {
         bookEntity.setCount(2);
         bookEntity.setPrice(5);
 
-        BookCount bookCount = new BookCount("B1", 3);
+        CartItem bookCount = new CartItem("B1", 3);
 
         when(userRepository.findById(userEntity.getId())).thenReturn(Optional.of(userEntity));
         when(bookRepository.findById("B1")).thenReturn(Optional.of(bookEntity));
@@ -92,7 +92,7 @@ class CarServiceTest {
         userEntity.setName("User2");
         userEntity.setNrn("12345678902");
 
-        BookCount bookCount = new BookCount("B1", 1);
+        CartItem bookCount = new CartItem("B1", 1);
 
         when(userRepository.findById(userEntity.getId())).thenReturn(Optional.of(userEntity));
         when(bookRepository.findById("B1")).thenReturn(Optional.empty());
@@ -110,7 +110,7 @@ class CarServiceTest {
         userEntity.setName("User2");
         userEntity.setNrn("12345678902");
 
-        BookCount bookCount = new BookCount("B1", 0);
+        CartItem bookCount = new CartItem("B1", 0);
         when(userRepository.findById(userEntity.getId())).thenReturn(Optional.of(userEntity));
 
         assertThatIllegalArgumentException()
@@ -121,7 +121,7 @@ class CarServiceTest {
 
     @Test
     void givenWrongUser_whenSubmit_thenException() {
-        BookCount bookCount = new BookCount("B1", 0);
+        CartItem bookCount = new CartItem("B1", 0);
         when(userRepository.findById(1L)).thenReturn(Optional.empty());
 
         assertThatIllegalArgumentException()

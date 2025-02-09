@@ -48,7 +48,7 @@ class OrderControllerTest {
         assertThat(mvc.perform(MockMvcRequestBuilders
                         .post("/order")
                         .content("User1")
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.TEXT_PLAIN_VALUE))
                 .andExpect(status().isCreated())
                 .andReturn().getResponse().getContentAsString())
                 .isEqualTo("{\"orderId\":1," +
@@ -56,7 +56,7 @@ class OrderControllerTest {
                         "\"status\":\"COMPLETED\"," +
                         "\"totalPrice\":100," +
                         "\"totalItem\":100," +
-                        "\"orderedBooks\":[{\"id\":\"B1\",\"title\":\"Book1\",\"author\":\"Author1\",\"totalPrice\":2,\"count\":1}]}");
+                        "\"orderedBooks\":[{\"id\":\"B1\",\"title\":\"Book1\",\"author\":\"Author1\",\"price\":2,\"count\":1}]}");
         verify(orderService).submit("User1");
     }
 
@@ -65,7 +65,7 @@ class OrderControllerTest {
         mvc.perform(MockMvcRequestBuilders
                         .post("/order")
                         .content("")
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.TEXT_PLAIN_VALUE))
                 .andExpect(status().isBadRequest());
         verifyNoInteractions(orderService);
     }
@@ -87,7 +87,7 @@ class OrderControllerTest {
                         "\"status\":\"COMPLETED\"," +
                         "\"totalPrice\":100," +
                         "\"totalItem\":100," +
-                        "\"orderedBooks\":[{\"id\":\"B1\",\"title\":\"Book1\",\"author\":\"Author1\",\"totalPrice\":2,\"count\":1}]}");
+                        "\"orderedBooks\":[{\"id\":\"B1\",\"title\":\"Book1\",\"author\":\"Author1\",\"price\":2,\"count\":1}]}");
         verify(orderService).get(1);
     }
 
@@ -122,14 +122,14 @@ class OrderControllerTest {
                         .put("/order")
                         .content(objectMapper.writeValueAsString(bookOrderStatus))
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated())
+                .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString())
                 .isEqualTo("{\"orderId\":1," +
                         "\"userId\":1," +
                         "\"status\":\"COMPLETED\"," +
                         "\"totalPrice\":100," +
                         "\"totalItem\":100," +
-                        "\"orderedBooks\":[{\"id\":\"B1\",\"title\":\"Book1\",\"author\":\"Author1\",\"totalPrice\":2,\"count\":1}]}");
+                        "\"orderedBooks\":[{\"id\":\"B1\",\"title\":\"Book1\",\"author\":\"Author1\",\"price\":2,\"count\":1}]}");
         verify(orderService).updateStatus(1, 1, OrderStatus.CANCELLED);
     }
 

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
@@ -29,12 +30,12 @@ public class OrderService {
         this.bookRepository = bookRepository;
     }
 
-    public Order submit(long userId) {
-        UserEntity userEntity = userRepository.findById(userId)
+    public Order submit(String username) {
+        UserEntity userEntity = Optional.of(userRepository.findUserEntityByName(username))
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         OrderEntity orderEntity = new OrderEntity();
-        orderEntity.setUserId(userId);
+        orderEntity.setUserId(userEntity.getId());
         orderEntity.setStatus(OrderStatus.SUBMITTED);
         CartEntity cartEntity = userEntity.getCart();
 

@@ -1,5 +1,6 @@
 package be.kata.service;
 
+import be.kata.api.model.DisplayUser;
 import be.kata.api.model.User;
 import be.kata.persistence.user.UserEntity;
 import be.kata.persistence.user.UserRepository;
@@ -29,13 +30,20 @@ public class UserService {
         return !isEmpty(userRepository.findUserEntityByName(name));
     }
 
+    public List<DisplayUser> getAllUser() {
+        List<UserEntity> userEntities = (List<UserEntity>) userRepository.findAll();
+        return userEntities.stream()
+                .map(userEntity -> new DisplayUser(userEntity.getId(), userEntity.getName(), roles(userEntity.getRoles())))
+                .toList();
+    }
+
     public User findUserByName(String name) {
         UserEntity userEntity = userRepository.findUserEntityByName(name);
         return new User(userEntity.getName(), userEntity.getPassword(), userEntity.getNrn(), roles(userEntity.getRoles()));
     }
 
     public boolean createUser(User user) {
-        Assert.notNull(user, "Invalid user");
+        Assert.notNull(user, "Invalid name");
         UserEntity userEntity = new UserEntity();
         userEntity.setNrn(user.nrn());
         userEntity.setName(user.name());

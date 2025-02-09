@@ -21,7 +21,7 @@ public record BookStoreUserPrincipal(User user) implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return user.roles().stream().map(role -> new SimpleGrantedAuthority(role.name())).toList();
+        return user.roles().stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role.name())).toList();
     }
 
 }

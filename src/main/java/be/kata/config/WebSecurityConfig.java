@@ -27,6 +27,8 @@ public class WebSecurityConfig {
                         authorizationManagerRequestMatcherRegistry
                                 .requestMatchers(new AntPathRequestMatcher("/register", "POST"))
                                 .permitAll()
+                                .requestMatchers("/books", "POST").hasRole("ADMIN")
+                                .requestMatchers("/order", "PUT", "POST").hasRole("ADMIN")
                                 .anyRequest()
                                 .authenticated())
                 .httpBasic(Customizer.withDefaults());

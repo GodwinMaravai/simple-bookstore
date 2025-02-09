@@ -1,5 +1,6 @@
 package be.kata.service;
 
+import be.kata.api.model.DisplayUser;
 import be.kata.api.model.User;
 import be.kata.persistence.user.UserEntity;
 import be.kata.persistence.user.UserRepository;
@@ -27,6 +28,24 @@ class UserServiceTest {
 
         assertThat(userService.isUserExist("User1")).isTrue();
         verify(userRepository).findUserEntityByName("User1");
+    }
+
+    @Test
+    void given_whenGetAllUser_thenReturnUser() {
+        UserEntity user = new UserEntity();
+        user.setName("adminuser");
+        user.setPassword("pass");
+        user.setRoles(BookStoreUserRole.ADMIN.name());
+
+        when(userRepository.findAll()).thenReturn(List.of(user));
+
+        assertThat(userService.getAllUser())
+                .hasSize(1).satisfiesExactly(
+                        item -> assertThat(item)
+                                .returns(0L, DisplayUser::id)
+                                .returns("adminuser", DisplayUser::name)
+                                .returns(List.of(BookStoreUserRole.ADMIN), DisplayUser::roles));
+        verify(userRepository).findAll();
     }
 
     @Test

@@ -1,0 +1,34 @@
+### ADMIN - REGISTER
+POST http://localhost:8080/register
+Content-Type: application/json
+
+{
+  "name": "admin",
+  "password": "admin",
+  "nrn": "12345678901",
+  "roles": [
+    "USER",
+    "ADMIN"
+  ]
+}
+
+### USER - REGISTER
+POST http://localhost:8080/register
+Content-Type: application/json
+
+{
+  "name": "user",
+  "password": "user",
+  "nrn": "12345678902",
+  "roles": [
+    "USER"
+    ]
+}
+
+### ADMIN - LOGIN
+GET http://localhost:8080/login
+Authorization: Basic YWRtaW46YWRtaW4=
+
+### USER - LOGIN
+GET http://localhost:8080/login
+Authorization: Basic dXNlcjp1c2Vy

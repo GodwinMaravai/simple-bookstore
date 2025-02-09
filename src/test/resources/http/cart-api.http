@@ -1,0 +1,4 @@
+### ADMIN - BOOK
+POST http://localhost:8080/cart
+Content-Type: application/json
+Authorization: Basic YWRtaW46YWRtaW4=

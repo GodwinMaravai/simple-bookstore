@@ -1,7 +1,7 @@
 package be.kata.api;
 
-import be.kata.api.model.CartItem;
 import be.kata.api.model.Cart;
+import be.kata.api.model.CartItem;
 import be.kata.config.BookStoreAppConfig;
 import be.kata.service.CartService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,7 +34,7 @@ class CartControllerTest {
 
     @Test
     void givenCart_whenSubmit_thenReturnWithStatusCode201() throws Exception {
-        Cart cart = new Cart(1, List.of(new CartItem("B1", 2), new CartItem("M1", 1)));
+        Cart cart = new Cart("name", List.of(new CartItem("B1", 2), new CartItem("M1", 1)));
         mvc.perform(MockMvcRequestBuilders
                         .post("/cart")
                         .content(objectMapper.writeValueAsString(cart))
@@ -44,7 +44,7 @@ class CartControllerTest {
 
     @Test
     void givenInvalidCart_whenSubmit_thenReturnWithStatusCode400() throws Exception {
-        Cart cart = new Cart(1, null);
+        Cart cart = new Cart("name", null);
         mvc.perform(MockMvcRequestBuilders
                         .post("/cart")
                         .content(objectMapper.writeValueAsString(cart))
@@ -54,7 +54,7 @@ class CartControllerTest {
 
     @Test
     void givenInvalidCartItem_whenSubmit_thenReturnWithStatusCode400() throws Exception {
-        Cart cart = new Cart(1, List.of(new CartItem(null, 2)));
+        Cart cart = new Cart("name", List.of(new CartItem(null, 2)));
         mvc.perform(MockMvcRequestBuilders
                         .post("/cart")
                         .content(objectMapper.writeValueAsString(cart))

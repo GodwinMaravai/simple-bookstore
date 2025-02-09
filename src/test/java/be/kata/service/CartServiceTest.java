@@ -48,12 +48,12 @@ class CartServiceTest {
         CartItem bookCount = new CartItem("B1", 1);
         CartItem bookCount2 = new CartItem("B2", 1);
 
-        when(userRepository.findById(userEntity.getId())).thenReturn(Optional.of(userEntity));
+        when(userRepository.findUserEntityByName(userEntity.getName())).thenReturn(userEntity);
 
         when(bookRepository.findById("B1")).thenReturn(Optional.of(bookEntity));
         when(bookRepository.findById("B2")).thenReturn(Optional.of(bookEntity2));
 
-        assertThat(cartService.submit(1, List.of(bookCount, bookCount2))).isTrue();
+        assertThat(cartService.submit(userEntity.getName(), List.of(bookCount, bookCount2))).isTrue();
 
         ArgumentCaptor<UserEntity> argumentCaptor = ArgumentCaptor.forClass(UserEntity.class);
         verify(userRepository).save(argumentCaptor.capture());
@@ -76,12 +76,12 @@ class CartServiceTest {
 
         CartItem bookCount = new CartItem("B1", 3);
 
-        when(userRepository.findById(userEntity.getId())).thenReturn(Optional.of(userEntity));
+        when(userRepository.findUserEntityByName(userEntity.getName())).thenReturn(userEntity);
         when(bookRepository.findById("B1")).thenReturn(Optional.of(bookEntity));
 
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> cartService.submit(1, List.of(bookCount)));
-        verify(userRepository).findById(1L);
+                .isThrownBy(() -> cartService.submit(userEntity.getName(), List.of(bookCount)));
+        verify(userRepository).findUserEntityByName(userEntity.getName());
         verifyNoMoreInteractions(userRepository);
     }
 
@@ -94,12 +94,12 @@ class CartServiceTest {
 
         CartItem bookCount = new CartItem("B1", 1);
 
-        when(userRepository.findById(userEntity.getId())).thenReturn(Optional.of(userEntity));
+        when(userRepository.findUserEntityByName(userEntity.getName())).thenReturn(userEntity);
         when(bookRepository.findById("B1")).thenReturn(Optional.empty());
 
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> cartService.submit(1, List.of(bookCount)));
-        verify(userRepository).findById(1L);
+                .isThrownBy(() -> cartService.submit(userEntity.getName(), List.of(bookCount)));
+        verify(userRepository).findUserEntityByName(userEntity.getName());
         verifyNoMoreInteractions(userRepository);
     }
 
@@ -111,22 +111,22 @@ class CartServiceTest {
         userEntity.setNrn("12345678902");
 
         CartItem bookCount = new CartItem("B1", 0);
-        when(userRepository.findById(userEntity.getId())).thenReturn(Optional.of(userEntity));
+        when(userRepository.findUserEntityByName(userEntity.getName())).thenReturn(userEntity);
 
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> cartService.submit(1, List.of(bookCount)));
-        verify(userRepository).findById(1L);
+                .isThrownBy(() -> cartService.submit(userEntity.getName(), List.of(bookCount)));
+        verify(userRepository).findUserEntityByName(userEntity.getName());
         verifyNoMoreInteractions(userRepository);
     }
 
     @Test
     void givenWrongUser_whenSubmit_thenException() {
         CartItem bookCount = new CartItem("B1", 0);
-        when(userRepository.findById(1L)).thenReturn(Optional.empty());
+        when(userRepository.findUserEntityByName("name")).thenReturn(new UserEntity());
 
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> cartService.submit(1, List.of(bookCount)));
-        verify(userRepository).findById(1L);
+                .isThrownBy(() -> cartService.submit("name", List.of(bookCount)));
+        verify(userRepository).findUserEntityByName("name");
         verifyNoMoreInteractions(userRepository);
     }
 }

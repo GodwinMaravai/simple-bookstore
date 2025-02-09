@@ -10,6 +10,7 @@ import be.kata.persistence.user.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -24,8 +25,8 @@ public class CartService {
         this.bookRepository = bookRepository;
     }
 
-    public boolean submit(long userId, List<CartItem> books) {
-        UserEntity userEntity = userRepository.findById(userId)
+    public boolean submit(String name, List<CartItem> books) {
+        UserEntity userEntity = Optional.of(userRepository.findUserEntityByName(name))
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
         Set<CartItemEntity> cartItemEntities = books.stream()
                 .map(this::getCartItemEntity)

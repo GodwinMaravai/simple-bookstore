@@ -12,6 +12,7 @@ import be.kata.persistence.user.UserEntity;
 import be.kata.persistence.user.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -58,5 +59,42 @@ public class OrderService {
         orderRepository.save(orderEntity);
 
         return new Order(orderEntity.getId(), orderEntity.getUserId(), orderEntity.getStatus(), orderEntity.getTotalPrice(), orderEntity.getTotalItem(), orderedBooks);
+    }
+
+    public Order updateStatus(long orderId, OrderStatus orderStatus) {
+        OrderEntity orderEntity = orderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("Order not found"));
+        if (orderEntity.getStatus().equals(OrderStatus.SUBMITTED)) {
+            orderEntity.setStatus(orderStatus);
+            List<Book> books = Collections.EMPTY_LIST;
+            if (OrderStatus.CANCELLED.equals(orderStatus)) {
+                orderEntity.setCart(null);
+            } else if (OrderStatus.COMPLETED.equals(orderStatus)) {
+                UserEntity userEntity = userRepository.findById(orderEntity.getUserId())
+                        .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                userEntity.setCart(null);
+                userRepository.save(userEntity);
+                books = getOrderedBooks(orderEntity);
+            }
+            orderRepository.save(orderEntity);
+            return new Order(orderEntity.getId(), orderEntity.getUserId(), orderEntity.getStatus(), orderEntity.getTotalPrice(), orderEntity.getTotalItem(), books);
+        }
+        throw new IllegalArgumentException("The order '%s' with status '%s' should not be updated");
+    }
+
+    public Order get(long orderId) {
+        OrderEntity orderEntity = orderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("Order not found"));
+        return new Order(orderEntity.getId(), orderEntity.getUserId(), orderEntity.getStatus(), orderEntity.getTotalPrice(), orderEntity.getTotalItem(), getOrderedBooks(orderEntity));
+    }
+
+    private List<Book> getOrderedBooks(OrderEntity orderEntity) {
+        return orderEntity.getCart().getItems()
+                .stream()
+                .map(entity -> {
+                    BookEntity bookEntity = bookRepository.findById(entity.getBookId()).orElseThrow(() -> new IllegalArgumentException("Book not found"));
+                    int pricePerBook = bookEntity.getPrice() * entity.getCount();
+                    return new Book(bookEntity.getId(), bookEntity.getName(), bookEntity.getAuthor(), pricePerBook, entity.getCount());
+                }).toList();
     }
 }
